@@ -1,5 +1,8 @@
 # SPLAT ARENA — protótipo jogável (navegador)
 
+**Jogar online:** https://witterveloso.github.io/splat-arena/ (GitHub Pages)
+
+
 Paintball tático 5x5 contra bots, com **1ª e 3ª pessoa**, para **PC e celular**, em **5 campos**. Sem build: HTML + Three.js (incluído em `web/js/vendor`).
 
 ## Rodar
