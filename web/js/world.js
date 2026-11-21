@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three.module.min.js';
 import { MAPS } from './maps.js';
+import { addArenaDetail } from './arena-detail.js';
 import { setTextureQuality, purgeTextures } from './textures.js';
 import { mergeGeometries } from './vendor/utils/BufferGeometryUtils.js';
 
@@ -232,6 +233,7 @@ export function createWorld(scene, renderer, quality = 'high') {
       const interiors = [], hutSpots = [], ramps = [], anim = [];
       const cfg = def.build({ group, obstacles, quality, ARENA, THREE, interiors, spots: hutSpots, ramps, anim });
       this.anim = anim; this.animT = 0;
+      addArenaDetail(group, id, quality);
       batchStatic(group);
       // sombra de contato (oclusão ambiente falsa): uma mancha escura suave sob cada obstáculo, em 1 chamada de desenho
       if (obstacles.length && !cfg.indoor) {
