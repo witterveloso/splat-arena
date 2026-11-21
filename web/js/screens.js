@@ -59,7 +59,7 @@ export function createScreens(game) {
   const mapItems = MAP_LIST.map((id) => ({
     value: id,
     render(b) {
-      b.innerHTML = `<img src="assets/maps/${id}.jpg" alt="" loading="lazy" onerror="this.style.display='none'"><div class="m-info"><div class="m-tag">${MAPS[id].tag}</div><div class="m-name">${MAPS[id].name}</div></div>`;
+      b.innerHTML = `<img src="assets/maps/${['porto','floresta','castelo','baseaerea','oeste'].includes(id) ? id + '.svg' : id + '.jpg'}" alt="" loading="lazy" onerror="this.style.display='none'"><div class="m-info"><div class="m-tag">${MAPS[id].tag}</div><div class="m-name">${MAPS[id].name}</div></div>`;
       b.setAttribute('aria-label', MAPS[id].name);
     },
   }));

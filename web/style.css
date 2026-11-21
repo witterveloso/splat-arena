@@ -658,3 +658,11 @@ body.ingame *, body.ingame *::before, body.ingame *::after { -webkit-backdrop-fi
   .cs-anim { gap: 4px; } .cs-anim button { min-height: 30px; padding: 3px 9px; font-size: 11px; } .cs-info { display: none; }
   #cs-use { margin-top: 6px; min-height: 44px; }
 }
+
+/* Splat Arena Visual 2.0 — marca oficial, responsiva e sem distorção */
+.brand-logo{display:block;object-fit:contain;max-width:100%;height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
+.brand-logo-loader{width:min(68vw,360px);margin:0 auto 16px}
+.brand-logo-intro{width:min(78vw,580px);margin:0 auto}
+.brand-logo-menu{width:clamp(128px,17vw,225px);max-height:74px}
+.intro-logo:has(.brand-logo){display:flex;align-items:center;justify-content:center;line-height:1}
+@media(max-width:650px){.brand-logo-menu{width:132px;max-height:52px}.brand-logo-loader{width:min(78vw,300px)}}

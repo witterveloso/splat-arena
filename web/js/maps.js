@@ -2,6 +2,7 @@ import * as THREE from './vendor/three.module.min.js';
 import { mergeGeometries, mergeVertices } from './vendor/utils/BufferGeometryUtils.js';
 import { buildVehicle, buildBus, VEHICLE_KINDS, vehicleSize } from './vehicles.js';
 import { buildApocalipse } from './apocalipse.js';
+import { buildExpansion } from './expansion-maps.js';
 import { material, boxGeo, planeGeo, decalMaterial, shaftTexture, hashRand } from './textures.js';
 
 const PI = Math.PI;
@@ -740,6 +741,11 @@ export const MAPS = {
   favela: { name: 'Morro Vivo', tag: 'Comunidade', blurb: 'Labirinto de becos, lajes e muita cor. Combate vertical e curto.', size: SIZE, menu: { r: 34, h: 17, rz: 1.4, look: [0, 1.6, 0] }, build: buildFavela },
   ferro: { name: 'Ferro-Velho', tag: 'Industrial', blurb: 'Pátio gigante de carcaças empilhadas, pneus e contêineres.', size: SIZE, menu: { r: 44, h: 14, rz: 1.3, look: [0, 1.4, 0] }, build: buildFerro },
   cidade: { name: 'Cidade Abandonada', tag: 'Urbano', blurb: 'Avenidas, quarteirões em ruínas e ônibus tombado.', size: SIZE, menu: { r: 40, h: 16, rz: 1.35, look: [0, 1.6, 0] }, build: buildCidade },
+  porto: { name: 'Porto de Contêineres', tag: 'Portuário', blurb: 'Corredores de contêineres, guindastes e caixas de carga.', size: SIZE, menu: { r: 46, h: 18, rz: 1.35, look: [0, 1.5, 0] }, build: (ctx) => buildExpansion('porto', ctx) },
+  floresta: { name: 'Floresta Tática', tag: 'Woodsball', blurb: 'Troncos, paliçadas e mata densa com cobertura natural.', size: SIZE, menu: { r: 46, h: 18, rz: 1.35, look: [0, 1.5, 0] }, build: (ctx) => buildExpansion('floresta', ctx) },
+  castelo: { name: 'Castelo de Paintball', tag: 'Fortaleza', blurb: 'Muralhas, torres e um pátio de combate medieval.', size: SIZE, menu: { r: 46, h: 18, rz: 1.35, look: [0, 1.5, 0] }, build: (ctx) => buildExpansion('castelo', ctx) },
+  baseaerea: { name: 'Base Aérea', tag: 'Militar', blurb: 'Hangares, caixas de carga e aeronaves estacionadas.', size: SIZE, menu: { r: 46, h: 18, rz: 1.35, look: [0, 1.5, 0] }, build: (ctx) => buildExpansion('baseaerea', ctx) },
+  oeste: { name: 'Vila do Oeste', tag: 'Faroeste', blurb: 'Saloon, celeiros, barricadas e ruas de terra.', size: SIZE, menu: { r: 46, h: 18, rz: 1.35, look: [0, 1.5, 0] }, build: (ctx) => buildExpansion('oeste', ctx) },
   apocalipse: { name: 'Zona Zero', tag: 'Apocalipse', blurb: 'Rodovia colapsada, engarrafamento carbonizado e helicópteros caídos: entre neles para se esconder.', size: SIZE, menu: { r: 40, h: 15, rz: 1.3, look: [0, 1.6, 0] }, build: (ctx) => buildApocalipse(ctx, LIB) },
 };
 export const MAP_LIST = Object.keys(MAPS);
