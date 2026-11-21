@@ -1,0 +1,20 @@
+name: Splat Arena Visual 2 — verificações
+on:
+  push:
+    branches:
+      - feature/visual-2-auditoria
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'tests/**'
+      - '.github/workflows/visual-2-check.yml'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar módulos e integração dos mapas
+        run: node tests/visual-2-smoke.mjs
