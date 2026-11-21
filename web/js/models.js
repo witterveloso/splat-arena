@@ -11,9 +11,10 @@ const lerp = (a, b, t) => a + (b - a) * t;
 import { buildMarker } from './weapon.js';
 export { buildMarker };
 
-export function buildProceduralCharacter(team, world) {
+export function buildProceduralCharacter(team, world, charId = 'bravo') {
+  const C = charOf(charId);
   const paint = TEAM_PAINT[team];
-  const jersey = std(paint, { roughness: 0.7 });
+  const jersey = std(0xffffff, { roughness: 0.8, map: charTexture(C) });
   const camo = std(0xffffff, { roughness: 0.95, map: procCamoTexture() });
   const black = std(0x15171a, { roughness: 0.5 });
   const skin = std(0xc89a78, { roughness: 0.8 });
@@ -21,6 +22,7 @@ export function buildProceduralCharacter(team, world) {
   const upper = new THREE.Group();
   const legsGroup = new THREE.Group();
   root.add(upper, legsGroup);
+  root.scale.set(C.w, C.h, C.w);
 
   const legs = [-1, 1].map((s) => {
     const g = new THREE.Group();
@@ -63,6 +65,50 @@ export function buildProceduralCharacter(team, world) {
   const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.03, 0.27), jersey);
   stripe.position.y = 0.09;
   head.add(helmet, visor, neckM, stripe);
+  // Capacete e máscara específicos de cada personagem, também no modo offline.
+  const accent = std(C.accent, { roughness: 0.48, metalness: 0.15 });
+  const hair = std(C.hair, { roughness: 0.94 });
+  const addHead = (geometry, material, x, y, z) => {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(x, y, z); head.add(mesh); return mesh;
+  };
+  if (C.head === 'helmet') {
+    addHead(new THREE.SphereGeometry(0.149, 16, 12), black, 0, 0.045, 0);
+    addHead(new THREE.BoxGeometry(0.035, 0.012, 0.28), accent, 0, 0.18, 0);
+  } else if (C.head === 'afro' || C.head === 'curly') {
+    for (let i = 0; i < (C.head === 'afro' ? 14 : 9); i++) {
+      const a = i * Math.PI * 2 / (C.head === 'afro' ? 14 : 9);
+      addHead(new THREE.SphereGeometry(0.043, 8, 6), hair, Math.cos(a) * 0.105, 0.135, Math.sin(a) * 0.085);
+    }
+  } else if (C.head === 'bun' || C.head === 'pony') {
+    addHead(new THREE.SphereGeometry(0.065, 12, 8), hair, 0, 0.16, 0.095);
+    if (C.head === 'pony') addHead(new THREE.CapsuleGeometry(0.03, 0.15, 4, 8), hair, 0, 0.09, 0.16);
+  } else if (C.head === 'cap') {
+    addHead(new THREE.BoxGeometry(0.23, 0.04, 0.17), accent, 0, 0.135, 0.045);
+  } else if (C.head === 'braid') {
+    addHead(new THREE.CapsuleGeometry(0.024, 0.22, 4, 8), hair, 0, 0.02, 0.15);
+  } else {
+    addHead(new THREE.SphereGeometry(0.12, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), hair, 0, 0.07, 0);
+  }
+  // Kits de proteção e acessórios com geometria própria por identidade.
+  if (C.kit.includes('plate')) {
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.27, 0.065), black);
+    plate.position.set(0, 1.19, -0.18); upper.add(plate);
+  }
+  if (C.kit.includes('radio')) {
+    const radio = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.13, 0.05), accent);
+    radio.position.set(-0.19, 1.32, -0.17); upper.add(radio);
+  }
+  if (C.kit.includes('tech')) {
+    const led = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.018, 0.025), std(C.accent, { emissive: C.accent, emissiveIntensity: 0.85 }));
+    led.position.set(0, 1.24, -0.19); upper.add(led);
+  }
+  if (C.kit.includes('pouch')) {
+    for (const side of [-1, 1]) {
+      const pouch = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.15, 0.1), black);
+      pouch.position.set(side * 0.19, 0.95, 0.05); upper.add(pouch);
+    }
+  }
   const paintOverlay = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.34), world.splatMaterial(team, 3));
   paintOverlay.position.set(0, 0.0, -0.152);
   paintOverlay.rotation.y = Math.PI;
@@ -205,7 +251,7 @@ function mergeGear(model) {
 }
 
 export function buildCharacter(team, world, charId = 'bravo') {
-  if (!SOLDIER) return buildProceduralCharacter(team, world);
+  if (!SOLDIER) return buildProceduralCharacter(team, world, charId);
   const C = charOf(charId), cacc = new THREE.Color(C.accent);
   const paint = TEAM_PAINT[team];            // cor da EQUIPE (braçadeiras, tira da máscara, pods, marcador); o uniforme usa a cor do personagem
   const root = new THREE.Group();
