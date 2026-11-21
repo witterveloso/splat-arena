@@ -10,6 +10,8 @@ const screens = read('web/js/screens.js');
 const html = read('web/index.html');
 const expansion = read('web/js/expansion-maps.js');
 const detail = read('web/js/arena-detail.js');
+const models = read('web/js/models.js');
+const characters = read('web/js/characters.js');
 const ids = ['arena','galpao','favela','ferro','cidade','apocalipse','porto','floresta','castelo','baseaerea','oeste'];
 for (const id of ids) {
   assert.match(maps, new RegExp('\\b' + id + ':\\s*\\{'), 'Mapa ausente: ' + id);
@@ -26,7 +28,11 @@ assert.match(screens, /id \+ '\.svg'/);
 assert.match(html, /expansion-maps\.js/);
 assert.match(html, /arena-detail\.js/);
 assert.match(detail, /quality !== 'high'/);
-for (const p of ['web/js/expansion-maps.js','web/js/arena-detail.js','web/js/maps.js','web/js/world.js','web/js/screens.js']) {
+assert.match(models, /buildProceduralCharacter\(team, world, charId\)/);
+assert.match(models, /if \(!SOLDIER\) return buildProceduralCharacter\(team, world, charId\)/);
+for (const id of ['bravo','luna','nex','zara','falcon','kira','rok','yuri']) assert.match(characters, new RegExp('\\b' + id + ':\\s*\\{'));
+assert.match(models, /charTexture\(C\)/);
+for (const p of ['web/js/expansion-maps.js','web/js/arena-detail.js','web/js/maps.js','web/js/world.js','web/js/screens.js','web/js/models.js']) {
   execFileSync(process.execPath, ['--check', new URL('../' + p, import.meta.url).pathname], { stdio: 'pipe' });
 }
 console.log('OK: 11 mapas, 5 miniaturas, integrações, colisões e sintaxe JS.');
